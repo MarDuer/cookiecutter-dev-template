@@ -95,14 +95,10 @@ Default([elf, hex_file, bin_file])
 # Clean target
 env.Clean(elf, build_dir)
 
-# Test target (Unity tests)
+# Test target (placeholder for future Unity tests)
 test_env = env.Clone()
-test_sources = Glob('tests/unity/*.c') + ['tests/unity/unity.c']
-test_program = test_env.Program(
-    target='build/test/test_runner',
-    source=test_sources
-)
-
-# Alias for test
-env.Alias('test', test_program)
+# Add test sources here when implementing tests
+# test_sources = Glob('tests/*.c')
+# test_program = test_env.Program(target='build/test/test_runner', source=test_sources)
+# env.Alias('test', test_program)
 {%- endif %}

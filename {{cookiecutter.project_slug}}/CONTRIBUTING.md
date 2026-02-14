@@ -132,11 +132,12 @@ just test-cov   # Run with coverage
 ```
 
 {%- elif cookiecutter.project_type == "c_tricore" -%}
-- Use Unity test framework
+- Tests can be added using Unity or other C test frameworks
 - Place tests in `tests/` directory
 
 ```bash
-just test       # Run all tests
+just build      # Build project
+just misra      # Run MISRA checks
 ```
 
 {%- endif %}

@@ -28,8 +28,7 @@ A comprehensive, production-ready cookiecutter template for developing Python pa
 - HighTec Free GCC toolchain
 - Linker script with TC375 memory map
 - Startup code with trap handlers
-- GPIO example
-- Unity test framework
+- GPIO example (basic pin toggle)
 - MISRA-C:2012 compliance with Cppcheck
 
 ## Quick Start

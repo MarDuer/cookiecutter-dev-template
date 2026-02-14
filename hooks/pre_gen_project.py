@@ -7,11 +7,19 @@ project_slug = "{{ cookiecutter.project_slug }}"
 python_version = "{{ cookiecutter.python_version }}"
 project_type = "{{ cookiecutter.project_type }}"
 
-# Validate project slug
-if not re.match(r"^[a-z][a-z0-9_]*$", project_slug):
-    print(f"ERROR: '{project_slug}' is not a valid Python module name.")
-    print("Must start with a letter and contain only lowercase letters, numbers, and underscores.")
-    sys.exit(1)
+# Validate project slug based on project type
+if project_type in ["python_cli", "python_library"]:
+    # Python projects need valid Python module names
+    if not re.match(r"^[a-z][a-z0-9_]*$", project_slug):
+        print(f"ERROR: '{project_slug}' is not a valid Python module name.")
+        print("Must start with a letter and contain only lowercase letters, numbers, and underscores.")
+        sys.exit(1)
+elif project_type == "c_tricore":
+    # C projects need valid C identifiers (allow uppercase)
+    if not re.match(r"^[a-zA-Z][a-zA-Z0-9_]*$", project_slug):
+        print(f"ERROR: '{project_slug}' is not a valid C identifier.")
+        print("Must start with a letter and contain only letters, numbers, and underscores.")
+        sys.exit(1)
 
 # Validate Python version for Python projects
 if project_type in ["python_cli", "python_library"]:

@@ -1,0 +1,108 @@
+{% if cookiecutter.project_type == "c_tricore" -%}
+"""
+SCons build script for {{ cookiecutter.project_name }}
+TriCore TC375 with HighTec Free GCC toolchain
+"""
+
+import os
+
+# Build configuration
+BUILD = ARGUMENTS.get('BUILD', 'debug')
+
+# Toolchain configuration
+TOOLCHAIN_PATH = os.getenv('HIGHTEC_TOOLCHAIN', '/opt/HighTec/toolchains/tricore/v4.9.3.0')
+CC = os.path.join(TOOLCHAIN_PATH, 'bin', 'tricore-gcc')
+AS = os.path.join(TOOLCHAIN_PATH, 'bin', 'tricore-as')
+LD = os.path.join(TOOLCHAIN_PATH, 'bin', 'tricore-ld')
+OBJCOPY = os.path.join(TOOLCHAIN_PATH, 'bin', 'tricore-objcopy')
+
+# Compiler flags
+CFLAGS_COMMON = [
+    '-mtc375',
+    '-Wall',
+    '-Wextra',
+    '-std=c11',
+    '-Isrc',
+    '-Istartup',
+]
+
+CFLAGS_DEBUG = CFLAGS_COMMON + [
+    '-g',
+    '-O0',
+    '-DDEBUG',
+]
+
+CFLAGS_RELEASE = CFLAGS_COMMON + [
+    '-O2',
+    '-DNDEBUG',
+]
+
+# Linker flags
+LDFLAGS = [
+    '-mtc375',
+    '-Tlinker/tc375_link.ld',
+    '-Wl,-Map=build/{}/output.map'.format(BUILD),
+]
+
+# Select flags based on build type
+if BUILD == 'release':
+    CFLAGS = CFLAGS_RELEASE
+else:
+    CFLAGS = CFLAGS_DEBUG
+
+# Create environment
+env = Environment(
+    CC=CC,
+    AS=AS,
+    LINK=CC,
+    CCFLAGS=CFLAGS,
+    LINKFLAGS=LDFLAGS,
+)
+
+# Source files
+sources = [
+    Glob('src/*.c'),
+    Glob('startup/*.c'),
+]
+
+# Build directory
+build_dir = 'build/{}'.format(BUILD)
+VariantDir(build_dir, 'src', duplicate=0)
+
+# Build executable
+elf = env.Program(
+    target=os.path.join(build_dir, '{{ cookiecutter.project_slug }}.elf'),
+    source=sources
+)
+
+# Generate hex file
+hex_file = env.Command(
+    os.path.join(build_dir, '{{ cookiecutter.project_slug }}.hex'),
+    elf,
+    '{} -O ihex $SOURCE $TARGET'.format(OBJCOPY)
+)
+
+# Generate binary file
+bin_file = env.Command(
+    os.path.join(build_dir, '{{ cookiecutter.project_slug }}.bin'),
+    elf,
+    '{} -O binary $SOURCE $TARGET'.format(OBJCOPY)
+)
+
+# Default target
+Default([elf, hex_file, bin_file])
+
+# Clean target
+env.Clean(elf, build_dir)
+
+# Test target (Unity tests)
+test_env = env.Clone()
+test_sources = Glob('tests/unity/*.c') + ['tests/unity/unity.c']
+test_program = test_env.Program(
+    target='build/test/test_runner',
+    source=test_sources
+)
+
+# Alias for test
+env.Alias('test', test_program)
+{%- endif %}

@@ -92,7 +92,7 @@ clean:
 
 # Run MISRA checks
 misra:
-    cppcheck --addon=misra src/
+    bash scripts/misra_check.sh
 
 # Serve documentation locally
 docs-serve:

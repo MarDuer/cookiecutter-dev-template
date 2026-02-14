@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [{{ cookiecutter.version }}] - {{ "now" | strftime("%Y-%m-%d") }}
+## [{{ cookiecutter.version }}] - {% now 'utc', '%Y-%m-%d' %}
 
 ### Added
 - Initial release

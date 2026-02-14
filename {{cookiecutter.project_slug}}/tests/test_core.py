@@ -2,6 +2,7 @@
 """Tests for core module."""
 
 import pytest
+
 from {{ cookiecutter.package_name }}.core import Core
 
 

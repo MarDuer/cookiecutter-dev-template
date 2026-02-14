@@ -2,7 +2,7 @@
 """Pytest configuration and fixtures."""
 
 import pytest
-from pathlib import Path
+
 from {{ cookiecutter.package_name }}.config import Config
 
 

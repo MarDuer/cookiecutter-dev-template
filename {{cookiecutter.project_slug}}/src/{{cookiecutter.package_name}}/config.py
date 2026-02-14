@@ -5,7 +5,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 import yaml
 from dotenv import load_dotenv
@@ -18,14 +18,14 @@ logger = logging.getLogger(__name__)
 class Config:
     """Configuration loader with priority: .env-private > .env > environment > config files."""
 
-    def __init__(self, config_dir: Optional[Path] = None) -> None:
+    def __init__(self, config_dir: Path | None = None) -> None:
         """Initialize configuration.
 
         Args:
             config_dir: Directory containing configuration files. Defaults to etc/.
         """
         self.config_dir = config_dir or Path("etc")
-        self._config: Dict[str, Any] = {}
+        self._config: dict[str, Any] = {}
         self._load_env_files()
 
     def _load_env_files(self) -> None:
@@ -41,7 +41,7 @@ class Config:
             load_dotenv(env_file, override=False)
             logger.debug("Loaded .env")
 
-    def load_yaml(self, filename: str) -> Dict[str, Any]:
+    def load_yaml(self, filename: str) -> dict[str, Any]:
         """Load YAML configuration file.
 
         Args:
@@ -60,7 +60,7 @@ class Config:
         except Exception as e:
             raise ConfigurationError(f"Failed to load {path}: {e}") from e
 
-    def load_json(self, filename: str) -> Dict[str, Any]:
+    def load_json(self, filename: str) -> dict[str, Any]:
         """Load JSON configuration file.
 
         Args:

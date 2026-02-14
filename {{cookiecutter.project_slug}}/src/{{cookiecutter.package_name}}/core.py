@@ -2,7 +2,7 @@
 """Core business logic for {{ cookiecutter.project_name }}."""
 
 import logging
-from typing import Dict, Any
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class Core:
     """Core application logic."""
 
-    def __init__(self, config: Dict[str, Any]) -> None:
+    def __init__(self, config: dict[str, Any]) -> None:
         """Initialize core logic.
 
         Args:

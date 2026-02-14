@@ -1,9 +1,9 @@
 {% if cookiecutter.project_type == "python_cli" -%}
 """Tests for CLI module."""
 
-import pytest
-from unittest.mock import patch, MagicMock
-from {{ cookiecutter.package_name }}.cli import cmd_init, cmd_run, cmd_config, main
+from unittest.mock import MagicMock, patch
+
+from {{ cookiecutter.package_name }}.cli import cmd_config, cmd_init, cmd_run, main
 
 
 def test_cmd_init(tmp_path, capsys):

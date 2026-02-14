@@ -1,8 +1,8 @@
 {% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
 """Tests for configuration module."""
 
-import os
 import pytest
+
 from {{ cookiecutter.package_name }}.config import Config, ConfigurationError
 
 

@@ -1,0 +1,29 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "charliermarsh.ruff",
+    "ms-python.mypy-type-checker",
+    "ms-python.isort",
+    "github.copilot",
+    "eamodio.gitlens",
+    "bierner.markdown-mermaid",
+    "yzhang.markdown-all-in-one",
+    {% if cookiecutter.project_type == "c_tricore" -%}
+    "ms-vscode.cpptools",
+    {%- endif %}
+    "ms-azuretools.vscode-docker",
+    "ms-vscode-remote.remote-wsl",
+    {% if cookiecutter.use_devcontainer == "yes" -%}
+    "ms-vscode-remote.remote-containers",
+    {%- endif %}
+    "mhutchie.git-graph",
+    "formulahendry.code-runner",
+    "codezombiech.gitignore",
+    "ritwickdey.liveserver",
+    "waderyan.gitblame",
+    "github.vscode-github-actions",
+    "pkief.material-icon-theme",
+    "gruntfuggly.todo-tree",
+    "redhat.vscode-yaml"
+  ]
+}

@@ -1,0 +1,55 @@
+{% if cookiecutter.use_pypi_deployment == "yes" -%}
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (leave empty to use commitizen)'
+        required: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    {% if cookiecutter.publishing_approval == "manual" -%}
+    environment: release
+    {%- endif %}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: uv python install {{ cookiecutter.python_version }}
+
+      - name: Install dependencies
+        run: uv sync --all-extras
+
+      - name: Bump version
+        if: {% raw %}${{ github.event.inputs.version == '' }}{% endraw %}
+        run: |
+          uv run cz bump --yes
+          git push --follow-tags
+
+      - name: Generate changelog
+        run: uv run cz changelog
+
+      - name: Build package
+        run: uv build
+
+      - name: Publish to PyPI
+        if: {% raw %}${{ cookiecutter.package_index == 'pypi' || cookiecutter.package_index == 'both' }}{% endraw %}
+        env:
+          UV_PUBLISH_TOKEN: {% raw %}${{ secrets.PYPI_TOKEN }}{% endraw %}
+        run: uv publish
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: {% raw %}${{ github.ref_name }}{% endraw %}
+          body_path: CHANGELOG.md
+          files: dist/*
+{%- endif %}

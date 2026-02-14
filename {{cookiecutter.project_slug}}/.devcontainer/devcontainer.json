@@ -1,0 +1,86 @@
+{% if cookiecutter.use_devcontainer == "yes" -%}
+{
+  "name": "{{ cookiecutter.project_name }}",
+  {% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+  "image": "mcr.microsoft.com/devcontainers/python:{{ cookiecutter.python_version }}",
+  {%- elif cookiecutter.project_type == "c_tricore" -%}
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  {%- endif %}
+  
+  "features": {
+    {% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "{{ cookiecutter.python_version }}"
+    },
+    {%- endif %}
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        {% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "ms-python.mypy-type-checker",
+        "ms-python.isort",
+        {%- elif cookiecutter.project_type == "c_tricore" -%}
+        "ms-vscode.cpptools",
+        {%- endif %}
+        "github.copilot",
+        "eamodio.gitlens",
+        "bierner.markdown-mermaid",
+        "yzhang.markdown-all-in-one",
+        "ms-azuretools.vscode-docker",
+        "mhutchie.git-graph",
+        "pkief.material-icon-theme",
+        "gruntfuggly.todo-tree",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        {% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "[python]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        }
+        {%- endif %}
+      }
+    }
+  },
+
+  {% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+  "postCreateCommand": "pip install uv && uv pip install -e '.[dev,test,docs]' && uv run pre-commit install",
+  {%- elif cookiecutter.project_type == "c_tricore" -%}
+  "postCreateCommand": "apt-get update && apt-get install -y scons python3-pip",
+  {%- endif %}
+
+  "remoteUser": "vscode",
+
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,readonly,type=bind,consistency=cached"
+  ],
+
+  "forwardPorts": [
+    {% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+    8000
+    {%- endif %}
+  ],
+
+  "portsAttributes": {
+    {% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+    "8000": {
+      "label": "MkDocs",
+      "onAutoForward": "notify"
+    }
+    {%- endif %}
+  },
+
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  }
+}
+{%- endif %}

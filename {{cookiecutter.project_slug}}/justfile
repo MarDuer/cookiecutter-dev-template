@@ -1,0 +1,90 @@
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+# Justfile for {{ cookiecutter.project_name }}
+
+# List available commands
+default:
+    @just --list
+
+# Install dependencies and setup development environment
+install:
+    uv venv
+    uv pip install -e ".[dev,test,docs]"
+    pre-commit install
+
+# Run tests
+test:
+    uv run pytest
+
+# Run tests with coverage
+test-cov:
+    uv run pytest --cov --cov-report=html --cov-report=term
+
+# Run linting checks
+lint:
+    uv run ruff check src tests
+
+# Format code
+format:
+    uv run ruff format src tests
+    uv run isort src tests
+
+# Run type checking
+typecheck:
+    uv run mypy src
+
+# Serve documentation locally
+docs-serve:
+    uv run mkdocs serve
+
+# Build documentation
+docs-build:
+    uv run mkdocs build
+
+# Clean build artifacts
+clean:
+    rm -rf build dist *.egg-info
+    rm -rf .pytest_cache .ruff_cache .mypy_cache
+    rm -rf htmlcov .coverage
+    find . -type d -name __pycache__ -exec rm -rf {} +
+
+# Run all CI checks locally
+ci: lint typecheck test
+
+# Bump version (requires commitizen)
+bump:
+    cz bump
+{%- elif cookiecutter.project_type == "c_tricore" -%}
+# Justfile for {{ cookiecutter.project_name }}
+
+# List available commands
+default:
+    @just --list
+
+# Build project (debug)
+build:
+    scons
+
+# Build release
+build-release:
+    scons BUILD=release
+
+# Run tests
+test:
+    scons test
+
+# Clean build artifacts
+clean:
+    scons -c
+
+# Run MISRA checks
+misra:
+    cppcheck --addon=misra src/
+
+# Serve documentation locally
+docs-serve:
+    mkdocs serve
+
+# Build documentation
+docs-build:
+    mkdocs build
+{%- endif %}

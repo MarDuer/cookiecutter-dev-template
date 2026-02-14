@@ -1,0 +1,17 @@
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# <footer>
+
+# Type: feat, fix, docs, style, refactor, test, chore, build, ci, perf, revert
+# Scope: component or file affected (optional)
+# Subject: short description (imperative mood, no period)
+#
+# Body: detailed description (optional)
+# - Explain what and why, not how
+# - Wrap at 72 characters
+#
+# Footer: breaking changes, issue references (optional)
+# BREAKING CHANGE: description
+# Closes #123

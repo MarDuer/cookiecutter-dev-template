@@ -1,0 +1,58 @@
+site_name: {{ cookiecutter.project_name }}
+site_description: {{ cookiecutter.project_short_description }}
+site_author: {{ cookiecutter.author_name }}
+{% if cookiecutter.github_username -%}
+repo_url: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
+repo_name: {{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
+{%- endif %}
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.instant
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed
+  - admonition
+  - toc:
+      permalink: true
+
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+{%- else -%}
+plugins:
+  - search
+{%- endif %}
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Architecture: architecture.md
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+  - API Reference: api.md
+{%- endif %}
+  - Examples: examples.md
+  - FAQ: faq.md
+  - Troubleshooting: troubleshooting.md
+  - Contributing: contributing.md
+  - Changelog: changelog.md

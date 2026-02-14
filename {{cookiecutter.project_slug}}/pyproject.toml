@@ -1,0 +1,96 @@
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "{{ cookiecutter.package_name }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.project_short_description }}"
+readme = "README.md"
+requires-python = ">={{ cookiecutter.python_version }}"
+{% if cookiecutter.license != "Proprietary" -%}
+license = { text = "{{ cookiecutter.license }}" }
+{%- endif %}
+authors = [
+    { name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}" }
+]
+dependencies = [
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0",
+{%- if cookiecutter.use_pydantic == "yes" %}
+    "pydantic>=2.0.0",
+{%- endif %}
+]
+
+{% if cookiecutter.project_type == "python_cli" -%}
+[project.scripts]
+{{ cookiecutter.package_name }} = "{{ cookiecutter.package_name }}.cli:main"
+{%- endif %}
+
+[project.optional-dependencies]
+dev = ["ruff>=0.3.0", "isort>=5.13.0", "mypy>=1.8.0", "pre-commit>=3.6.0"]
+test = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.12.0",
+{%- if cookiecutter.use_async == "yes" %}
+    "pytest-asyncio>=0.23.0",
+{%- endif %}
+    "pytest-xdist>=3.5.0",
+{%- if cookiecutter.use_profiling == "yes" %}
+    "pytest-benchmark>=4.0.0",
+{%- endif %}
+]
+docs = ["mkdocs>=1.5.0", "mkdocs-material>=9.5.0", "mkdocstrings[python]>=0.24.0", "pymdown-extensions>=10.7.0"]
+
+[tool.hatchling.build.targets.wheel]
+packages = ["src/{{ cookiecutter.package_name }}"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py{{ cookiecutter.python_version.replace('.', '') }}"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "D", "UP"]
+ignore = ["D203", "D213"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.isort]
+profile = "black"
+line_length = 100
+src_paths = ["src", "tests"]
+
+[tool.mypy]
+python_version = "{{ cookiecutter.python_version }}"
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--cov={{ cookiecutter.package_name }}",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+{%- if cookiecutter.use_async == "yes" %}
+    "--asyncio-mode=auto",
+{%- endif %}
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 0
+show_missing = true
+{%- endif %}

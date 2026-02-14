@@ -1,0 +1,15 @@
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "{{ cookiecutter.version }}"
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+version_files = [
+    "pyproject.toml:version",
+    "src/{{ cookiecutter.package_name }}/__init__.py:__version__",
+]
+{%- elif cookiecutter.project_type == "c_tricore" -%}
+version_files = [
+    ".cz.toml:version",
+]
+{%- endif %}
+tag_format = "v$version"
+update_changelog_on_bump = true

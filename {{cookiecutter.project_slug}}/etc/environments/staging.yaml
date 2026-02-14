@@ -1,0 +1,3 @@
+environment: staging
+debug: false
+log_level: INFO

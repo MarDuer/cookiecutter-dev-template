@@ -47,6 +47,13 @@ try:
 except subprocess.CalledProcessError:
     print("  ⚠ Failed to initialize git repository")
 
+# Initialize Git LFS
+try:
+    subprocess.run(["git", "lfs", "install"], check=True, capture_output=True)
+    print("  ✓ Initialized Git LFS")
+except (subprocess.CalledProcessError, FileNotFoundError):
+    print("  ⚠ Git LFS not found. Install it from: https://git-lfs.github.com/")
+
 # Set git commit template
 try:
     subprocess.run(

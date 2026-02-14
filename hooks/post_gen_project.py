@@ -13,12 +13,14 @@ print("🔧 Running post-generation setup...")
 
 # Remove files based on project type
 if project_type == "c_tricore":
-    # Remove Python-specific files
+    # Remove Python package files but keep build tools
     files_to_remove = [
-        "pyproject.toml",
-        "uv.toml",
-        "src",
-        "tests/__pycache__",
+        "src/{{ cookiecutter.package_name }}",
+        "tests/test_cli.py",
+        "tests/test_config.py",
+        "tests/test_core.py",
+        "tests/conftest.py",
+        "docs/api.md",
     ]
     for item in files_to_remove:
         path = Path(item)
@@ -30,8 +32,21 @@ if project_type == "c_tricore":
             print(f"  ✓ Removed {item}")
 
 elif project_type in ["python_cli", "python_library"]:
-    # Remove C-specific files (will be added in future tasks)
-    pass
+    # Remove C-specific files
+    files_to_remove = [
+        "SConstruct",
+        "linker",
+        "startup",
+        "scripts/misra_check.sh",
+    ]
+    for item in files_to_remove:
+        path = Path(item)
+        if path.exists():
+            if path.is_dir():
+                shutil.rmtree(path)
+            else:
+                path.unlink()
+            print(f"  ✓ Removed {item}")
 
 # Remove devcontainer if not needed
 if use_devcontainer == "no":
@@ -65,26 +80,26 @@ try:
 except subprocess.CalledProcessError:
     print("  ⚠ Failed to set git commit template")
 
-# For Python projects, setup virtual environment
+# Setup Python environment for all project types
+print("\n📦 Setting up Python environment...")
+
+# Check if uv is available
+try:
+    subprocess.run(["uv", "--version"], check=True, capture_output=True)
+except (subprocess.CalledProcessError, FileNotFoundError):
+    print("  ⚠ uv not found. Install it with: curl -LsSf https://astral.sh/uv/install.sh | sh")
+    print("  Skipping virtual environment setup")
+    sys.exit(0)
+
+# Create virtual environment
+try:
+    subprocess.run(["uv", "venv"], check=True)
+    print("  ✓ Created virtual environment")
+except subprocess.CalledProcessError:
+    print("  ⚠ Failed to create virtual environment")
+
+# Install dependencies based on project type
 if project_type in ["python_cli", "python_library"]:
-    print("\n📦 Setting up Python environment...")
-
-    # Check if uv is available
-    try:
-        subprocess.run(["uv", "--version"], check=True, capture_output=True)
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        print("  ⚠ uv not found. Install it with: curl -LsSf https://astral.sh/uv/install.sh | sh")
-        print("  Skipping virtual environment setup")
-        sys.exit(0)
-
-    # Create virtual environment
-    try:
-        subprocess.run(["uv", "venv"], check=True)
-        print("  ✓ Created virtual environment")
-    except subprocess.CalledProcessError:
-        print("  ⚠ Failed to create virtual environment")
-
-    # Install dependencies
     try:
         subprocess.run(
             ["uv", "pip", "install", "-e", ".[dev,test,docs]"],
@@ -93,6 +108,28 @@ if project_type in ["python_cli", "python_library"]:
         print("  ✓ Installed dependencies")
     except subprocess.CalledProcessError:
         print("  ⚠ Failed to install dependencies")
+
+    # Install pre-commit hooks
+    try:
+        subprocess.run(
+            ["uv", "run", "pre-commit", "install"],
+            check=True,
+            capture_output=True
+        )
+        print("  ✓ Installed pre-commit hooks")
+    except subprocess.CalledProcessError:
+        print("  ⚠ Failed to install pre-commit hooks")
+
+elif project_type == "c_tricore":
+    # Install SCons and development tools for C projects
+    try:
+        subprocess.run(
+            ["uv", "pip", "install", "scons", "cppcheck"],
+            check=True
+        )
+        print("  ✓ Installed SCons and build tools")
+    except subprocess.CalledProcessError:
+        print("  ⚠ Failed to install build tools")
 
     # Install pre-commit hooks
     try:

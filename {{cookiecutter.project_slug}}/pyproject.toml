@@ -18,6 +18,32 @@ authors = [
 dependencies = [
     "python-dotenv>=1.0.0",
     "pyyaml>=6.0",
+{%- elif cookiecutter.project_type == "c_tricore" -%}
+# Minimal pyproject.toml for C project build tools
+[project]
+name = "{{ cookiecutter.package_name }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.project_short_description }}"
+readme = "README.md"
+requires-python = ">=3.10"
+{% if cookiecutter.license != "Proprietary" -%}
+license = { text = "{{ cookiecutter.license }}" }
+{%- endif %}
+authors = [
+    { name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}" }
+]
+
+# Build tools for C development
+dependencies = [
+    "scons>=4.6.0",
+    "cppcheck>=2.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=3.5.0",
+]
+{%- endif %}
 {%- if cookiecutter.use_pydantic == "yes" %}
     "pydantic>=2.0.0",
 {%- endif %}

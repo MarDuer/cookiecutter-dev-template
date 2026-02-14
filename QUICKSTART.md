@@ -11,10 +11,10 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ```bash
 # Using uvx (recommended - no need to install cookiecutter)
-uvx --python 3.14 cookiecutter /home/markus/JustForFun/python-package-template
+uvx --python 3.14 cookiecutter /home/markus/JustForFun/cookiecutter-dev-template
 
 # Or if you have cookiecutter installed
-cd /home/markus/JustForFun/python-package-template
+cd /home/markus/JustForFun/cookiecutter-dev-template
 cookiecutter .
 ```
 

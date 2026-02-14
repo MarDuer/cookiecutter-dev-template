@@ -42,14 +42,14 @@ A comprehensive, production-ready cookiecutter template for developing Python pa
 
 ```bash
 # Using uvx (recommended - no installation needed)
-uvx --python 3.14 cookiecutter https://github.com/{{ cookiecutter.github_username }}/python-package-template
+uvx --python 3.14 cookiecutter https://github.com/{{ cookiecutter.github_username }}/cookiecutter-dev-template
 
 # Or from local template
-uvx cookiecutter /path/to/python-package-template
+uvx cookiecutter /path/to/cookiecutter-dev-template
 
 # Or with cookiecutter installed
 pip install cookiecutter
-cookiecutter https://github.com/{{ cookiecutter.github_username }}/python-package-template
+cookiecutter https://github.com/{{ cookiecutter.github_username }}/cookiecutter-dev-template
 ```
 
 Follow the prompts to customize your project.

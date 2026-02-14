@@ -94,7 +94,7 @@ The template generates production-ready Python projects with:
 
 ```bash
 # Generate a new project
-uvx --python 3.14 cookiecutter /path/to/python-package-template
+uvx --python 3.14 cookiecutter /path/to/cookiecutter-dev-template
 
 # Everything is set up automatically!
 cd your-project

@@ -73,7 +73,7 @@ We've successfully implemented the **critical path** to get a working cookiecutt
 
 ```bash
 # Generate a new project
-cookiecutter /home/markus/JustForFun/python-package-template
+cookiecutter /home/markus/JustForFun/cookiecutter-dev-template
 
 # Follow the prompts, then:
 cd your-new-project

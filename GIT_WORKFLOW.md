@@ -13,7 +13,7 @@
 
 ```bash
 # From the template directory
-cd /home/markus/JustForFun/python-package-template
+cd /home/markus/JustForFun/cookiecutter-dev-template
 cookiecutter .
 ```
 
@@ -45,7 +45,7 @@ If you find issues, note them down and we'll fix them in the next iteration.
 
 ```bash
 # Switch back to template directory
-cd /home/markus/JustForFun/python-package-template
+cd /home/markus/JustForFun/cookiecutter-dev-template
 
 # Continue development on develop branch
 git checkout develop
@@ -61,7 +61,7 @@ git checkout develop
 
 ```bash
 # Switch back to template directory
-cd /home/markus/JustForFun/python-package-template
+cd /home/markus/JustForFun/cookiecutter-dev-template
 
 # Stay on develop branch
 git checkout develop
@@ -127,6 +127,6 @@ git reset --hard 505ce19
 
 ## Contact Points
 
-- Template directory: `/home/markus/JustForFun/python-package-template`
+- Template directory: `/home/markus/JustForFun/cookiecutter-dev-template`
 - Documentation: `QUICKSTART.md`, `CRITICAL_PATH_SUMMARY.md`
 - Progress tracking: `IMPLEMENTATION_PROGRESS.md`

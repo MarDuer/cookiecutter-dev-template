@@ -1,7 +1,3 @@
 {% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
-[tool.uv]
-required-version = ">={{ cookiecutter.python_version }}"
-
-[tool.uv.pip]
 index-url = "https://pypi.org/simple"
 {%- endif %}

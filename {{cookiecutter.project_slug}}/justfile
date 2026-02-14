@@ -53,6 +53,20 @@ ci: lint typecheck test
 # Bump version (requires commitizen)
 bump:
     cz bump
+
+# Docker commands
+docker-build:
+    docker build -t {{ cookiecutter.project_slug }}:{{ cookiecutter.version }} .
+
+docker-run:
+    docker run --rm {{ cookiecutter.project_slug }}:{{ cookiecutter.version }}
+
+docker-dev:
+    docker-compose up dev
+
+docker-clean:
+    docker-compose down -v
+    docker rmi {{ cookiecutter.project_slug }}:{{ cookiecutter.version }} || true
 {%- elif cookiecutter.project_type == "c_tricore" -%}
 # Justfile for {{ cookiecutter.project_name }}
 

@@ -1,0 +1,35 @@
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: {{ cookiecutter.project_slug }}
+    image: {{ cookiecutter.project_slug }}:{{ cookiecutter.version }}
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    {% if cookiecutter.project_type == "python_cli" -%}
+    # For CLI tools, override command as needed
+    # command: ["run", "your-args"]
+    {%- endif %}
+
+  # Development service with hot reload
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: {{ cookiecutter.project_slug }}-dev
+    environment:
+      - LOG_LEVEL=DEBUG
+      - DEBUG=true
+    volumes:
+      - .:/app
+      - /app/.venv
+    command: ["python", "-m", "{{ cookiecutter.package_name }}"]
+    stdin_open: true
+    tty: true
+{%- endif %}

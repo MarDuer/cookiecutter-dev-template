@@ -1,0 +1,67 @@
+# Docker ignore file for {{ cookiecutter.project_name }}
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Linting
+.ruff_cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Documentation
+docs/
+site/
+*.md
+!README.md
+
+# CI/CD
+.github/
+.pre-commit-config.yaml
+
+# Development
+tests/
+scripts/
+justfile
+docker-compose.yml
+
+# Logs
+logs/
+*.log
+
+# Environment files
+.env
+.env-private
+.env.*

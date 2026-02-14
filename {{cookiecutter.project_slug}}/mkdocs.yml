@@ -39,10 +39,10 @@ plugins:
           options:
             docstring_style: google
             show_source: true
-{%- else -%}
+{%- else %}
 plugins:
   - search
-{%- endif %}
+{% endif %}
 
 nav:
   - Home: index.md

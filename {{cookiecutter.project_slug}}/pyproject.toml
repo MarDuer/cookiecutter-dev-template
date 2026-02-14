@@ -49,7 +49,7 @@ packages = ["src/{{ cookiecutter.package_name }}"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py{{ cookiecutter.python_version.replace('.', '') }}"
+target-version = "py{% if cookiecutter.python_version in ['3.13', '3.14'] %}312{% else %}{{ cookiecutter.python_version.replace('.', '') }}{% endif %}"
 src = ["src", "tests"]
 
 [tool.ruff.lint]

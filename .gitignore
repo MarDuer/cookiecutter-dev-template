@@ -1,0 +1,10 @@
+# Template development
+logging
+os
+*.pyc
+__pycache__/
+
+# Generated test projects
+temic/
+my_test_tool/
+test_*/

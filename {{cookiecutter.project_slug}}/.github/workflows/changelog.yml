@@ -1,0 +1,62 @@
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+name: Update Changelog
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        run: |
+          cat > CHANGELOG.md << 'EOF'
+          # Changelog
+
+          All notable changes to this project will be documented in this file.
+
+          The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+          and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+          EOF
+          
+          # Get all tags sorted by version
+          git tag -l --sort=-version:refname | while read tag; do
+            if [ -n "$prev_tag" ]; then
+              echo "## [$tag] - $(git log -1 --format=%ai $tag | cut -d' ' -f1)" >> CHANGELOG.md
+              echo "" >> CHANGELOG.md
+              
+              # Group commits by type
+              git log $tag...$prev_tag --pretty=format:"%s" | grep -E "^(feat|fix|docs|style|refactor|perf|test|chore|build|ci):" | while read commit; do
+                type=$(echo "$commit" | cut -d: -f1)
+                msg=$(echo "$commit" | cut -d: -f2-)
+                
+                case $type in
+                  feat) echo "### Added" >> CHANGELOG.md; echo "- $msg" >> CHANGELOG.md ;;
+                  fix) echo "### Fixed" >> CHANGELOG.md; echo "- $msg" >> CHANGELOG.md ;;
+                  docs) echo "### Documentation" >> CHANGELOG.md; echo "- $msg" >> CHANGELOG.md ;;
+                  perf) echo "### Performance" >> CHANGELOG.md; echo "- $msg" >> CHANGELOG.md ;;
+                  refactor) echo "### Changed" >> CHANGELOG.md; echo "- $msg" >> CHANGELOG.md ;;
+                esac
+              done
+              echo "" >> CHANGELOG.md
+            fi
+            prev_tag=$tag
+          done
+
+      - name: Commit changelog
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "docs: update changelog" || exit 0
+          git push
+{%- endif %}

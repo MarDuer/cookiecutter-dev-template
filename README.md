@@ -36,21 +36,21 @@ A comprehensive, production-ready cookiecutter template for developing Python pa
 
 ### Prerequisites
 
-- Python 3.10+
-- [cookiecutter](https://github.com/cookiecutter/cookiecutter)
-- [uv](https://github.com/astral-sh/uv) (for Python projects)
+- Python 3.10+ (or use uv's managed Python)
+- [uv](https://github.com/astral-sh/uv) (includes uvx)
 
 ### Create a New Project
 
 ```bash
-# Install cookiecutter
-pip install cookiecutter
-
-# Generate project from template
-cookiecutter https://github.com/{{ cookiecutter.github_username }}/python-package-template
+# Using uvx (recommended - no installation needed)
+uvx --python 3.14 cookiecutter https://github.com/{{ cookiecutter.github_username }}/python-package-template
 
 # Or from local template
-cookiecutter /path/to/python-package-template
+uvx cookiecutter /path/to/python-package-template
+
+# Or with cookiecutter installed
+pip install cookiecutter
+cookiecutter https://github.com/{{ cookiecutter.github_username }}/python-package-template
 ```
 
 Follow the prompts to customize your project.

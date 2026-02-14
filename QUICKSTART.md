@@ -3,20 +3,18 @@
 ## Prerequisites
 
 ```bash
-# Install cookiecutter
-pip install cookiecutter
-
-# Install uv (for Python projects)
+# Install uv (includes uvx)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 ## Generate a Test Project
 
 ```bash
-# From the template directory
-cd /home/markus/JustForFun/python-package-template
+# Using uvx (recommended - no need to install cookiecutter)
+uvx --python 3.14 cookiecutter /home/markus/JustForFun/python-package-template
 
-# Generate a Python CLI project
+# Or if you have cookiecutter installed
+cd /home/markus/JustForFun/python-package-template
 cookiecutter .
 ```
 

@@ -9,7 +9,7 @@ default:
 install:
     uv venv
     uv pip install -e ".[dev,test,docs]"
-    pre-commit install
+    uv run pre-commit install
 
 # Run tests
 test:

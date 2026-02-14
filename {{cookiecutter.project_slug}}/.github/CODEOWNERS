@@ -1,0 +1,45 @@
+# Code Owners
+# This file defines who is responsible for code in this repository
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repo
+* @{{ cookiecutter.github_username }}
+
+# Source code
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+/src/ @{{ cookiecutter.github_username }}
+/tests/ @{{ cookiecutter.github_username }}
+{%- elif cookiecutter.project_type == "c_tricore" -%}
+/src/*.c @{{ cookiecutter.github_username }}
+/src/*.h @{{ cookiecutter.github_username }}
+/tests/ @{{ cookiecutter.github_username }}
+{%- endif %}
+
+# Documentation
+/docs/ @{{ cookiecutter.github_username }}
+*.md @{{ cookiecutter.github_username }}
+
+# Configuration files
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+pyproject.toml @{{ cookiecutter.github_username }}
+uv.toml @{{ cookiecutter.github_username }}
+{%- elif cookiecutter.project_type == "c_tricore" -%}
+SConstruct @{{ cookiecutter.github_username }}
+{%- endif %}
+.pre-commit-config.yaml @{{ cookiecutter.github_username }}
+.cz.toml @{{ cookiecutter.github_username }}
+
+# CI/CD
+/.github/ @{{ cookiecutter.github_username }}
+
+# Build and deployment
+{% if cookiecutter.project_type in ["python_cli", "python_library"] -%}
+Dockerfile @{{ cookiecutter.github_username }}
+{%- elif cookiecutter.project_type == "c_tricore" -%}
+/linker/ @{{ cookiecutter.github_username }}
+/startup/ @{{ cookiecutter.github_username }}
+{%- endif %}
+
+# Configuration directories
+/etc/ @{{ cookiecutter.github_username }}
+/.vscode/ @{{ cookiecutter.github_username }}

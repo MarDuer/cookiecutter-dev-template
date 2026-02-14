@@ -59,10 +59,22 @@
 - [x] LICENSE
 - [x] Template README.md
 
-## Remaining Tasks (High Priority)
+### Task 7: GitHub Actions Workflows ✓
+- [x] test.yml (tests, linting, pre-commit, coverage)
+- [x] docs.yml (build and deploy to GitHub Pages)
+- [x] release.yml (automated release with commitizen)
+- [x] security.yml (CodeQL scanning)
+- [x] dependabot.yml (dependency updates)
+- [x] stale.yml (optional stale bot)
 
-- Task 7: GitHub Actions workflows
-- Task 8: VS Code configuration
+### Task 8: VS Code Configuration ✓
+- [x] settings.json
+- [x] extensions.json
+- [x] tasks.json
+- [x] launch.json
+- [x] mcp.json
+
+## Remaining Tasks (High Priority)
 - Task 9: C/TriCore variant (source files)
 - Task 10: Git templates (PR, issues, CODEOWNERS)
 - Task 12: Docker
